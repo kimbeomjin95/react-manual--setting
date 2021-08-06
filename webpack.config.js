@@ -22,7 +22,19 @@ module.exports = {
       test: /\.jsx/, // js, jsx파일 적용(정규표현식 방법)
       loader: 'babel-loader',// js, jsx에 바벨을 적용하여 최신 문법을 구형브라우저에서 작동할 수 있도록 변환
       options: { // 바벨 옵션 설정
-        presets: ['@babel/preset-env', '@babel/preset-react']
+        presets: [ // presets: 플러그인의 모음
+          [
+            '@babel/preset-env',
+            {
+              targets: {
+                // 2번째 파라미터에 preset-env에 대한 추가 설정
+                browsers: ['> 5% in KR'],
+              },
+              debug: true // 개발용에서 설정
+            },
+          ],
+          '@babel/preset-react',
+        ],
       }
     }]
   },
