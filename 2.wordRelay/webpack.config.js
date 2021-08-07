@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
+const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = {
   // 웹팩에 대한 기본정보
@@ -34,19 +34,29 @@ module.exports = {
             ],
             '@babel/preset-react',
           ],
-          plugins: [], // plugin들의 모음이 preset
+          plugins: [
+            '@babel/plugin-proposal-class-properties',
+            'react-refresh/babel', // 바벨이 최신문법을 예전문법으로 변환할 때 핫리로딩 기능도 추가해줌
+          ], // plugin들의 모음이 preset
         },
       },
     ],
   },
   plugins: [
     // 확장 프로그램
-    new webpack.LoaderOptionsPlugin({ debug: true }), // mudule(Loaders)의 options의 debug: true 설정
+    new RefreshWebpackPlugin() // 앞으로 빌드할때 마다 이 부분이 실행
   ],
   output: {
     // 출력
     // path.join: 경로를 통합, __dirname: 현재 폴더 경로,
-    path: path.join(__dirname, 'src'), // __dirname: C:\kbj\react\react-webgame/1.gugudan -> src
+    path: path.join(__dirname, 'src'), // __dirname: C:\kbj\react\react-webgame/1.gugudan -> src, path는 실제경로
     filename: 'app.js',
+    publicPath: "/src/"
   },
+  devServer: { // 개발 서버
+    publicPath: "/src/",  // 가상경로(webpack-dev-server에서는 가상경로가 필요함)
+    hot: true,
+    host: "localhost",
+    port: 5500
+  }
 };

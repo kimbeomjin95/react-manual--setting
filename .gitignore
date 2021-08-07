@@ -6,3 +6,6 @@ package-lock.json
 
 # yarn
 yarn.lock
+
+# misc
+.idea
