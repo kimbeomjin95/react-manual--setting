@@ -2,45 +2,42 @@ const React = require('react');
 const { useState, useRef } = React; // 구조분해(비구조화 할당)
 
 const WordRelay = () => {
-  const [state, setState] = useState({
-    word: '김범진',
-    value: '',
-    result: '',
-  });
+  const [word, setWord] = useState('김범진');
+  const [value, setValue] = useState('');
+  const [result, setResult] = useState('');
+
   const inputName = useRef();
-  const { word, value, result } = state;
 
   const onChange = e => {
-    setState({
-      word: word,
-      value: e.target.value,
-      result: '',
-    });
+    setValue(e.target.value);
   };
 
   const onSubmit = e => {
     e.preventDefault();
     if (word[word.length - 1] === value[0]) {
-      setState({
-        word: value,
-        value: '',
-        result: '딩동댕',
-      });
+      setWord(value);
+      setResult('딩동댕');
+      setValue('');
       inputName.current.focus();
     } else {
-      setState({
-        word: word,
-        value: '',
-        result: '땡',
-      });
+      setValue('');
+      setResult('땡');
+      setValue('');
       inputName.current.focus();
     }
   };
   return (
     <>
+      <div><b>{word}</b></div>
       <form onSubmit={onSubmit}>
-        <div>{word}</div>
-        <input onChange={onChange} value={value} ref={inputName} />
+        <label id='label' htmlFor='wordInput'>글자를 입력하세요</label><br/>
+        <input
+          id="wordInput"
+          className="wordInput"
+          onChange={onChange}
+          value={value}
+          ref={inputName}
+        />
         <button>클릭</button>
         <div>{result}</div>
       </form>

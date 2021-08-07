@@ -57,6 +57,6 @@ module.exports = {
     publicPath: "/src/",  // 가상경로(webpack-dev-server에서는 가상경로가 필요함)
     hot: true,
     host: "localhost",
-    port: 5500
+    port: 3000
   }
 };
