@@ -13,7 +13,7 @@ module.exports = {
   },
   entry: { // 입력
     // 이 두 파일을 합쳐서 app.js로 만들어줌
-    // webpack에서는 client.jsx 파일을 불러오면 자동적으로 WordRelay.jsx 파일을 호출, 그러므로 client.jsx 파일만 entry.app에 넣어줘도 됨
+    // webpack에서는 client.jsx 파일을 불러오면 자동적으로 NumberBaseball.jsx 파일을 호출, 그러므로 client.jsx 파일만 entry.app에 넣어줘도 됨
     app: ['./client'],
   },
 
