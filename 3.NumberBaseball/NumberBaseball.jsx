@@ -1,7 +1,7 @@
 // Node에서는 require 사용, react는 import, export 사용
 import Try from './Try';
 const React = require('react');
-const { useState, useRef } = React; // 구조분해(비구조화 할당)
+const { useState, useRef, memo } = React; // 구조분해(비구조화 할당)
 
 const getNumbers = () => {
   const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -13,7 +13,9 @@ const getNumbers = () => {
   return array;
 };
 
-const NumberBaseball = () => {
+// 자식이 모두 memo이면 부모에도 memo를 적용할 수 있음
+const NumberBaseball = memo(() => {
+  // 렌더링은 state or props가 바뀌었을 때 실행, setState만 호출하면 렌더링이 됌
   const [value, setValue] = useState('');
   const [result, setResult] = useState('');
   const [answer, setAnswer] = useState(getNumbers);
@@ -86,6 +88,6 @@ const NumberBaseball = () => {
       </ul>
     </>
   );
-};
+});
 
 export default NumberBaseball;
