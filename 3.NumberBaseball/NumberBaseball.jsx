@@ -33,8 +33,10 @@ const NumberBaseball = memo(() => {
       // setResult('홈런');
       setTries(
         (
-          prevTries, // // 현재 상태를 가져와서 업데이트 하겠다는 의미(함수형 업데이트 - 성능 최적화와 관련)
-        ) => [...prevTries, { try: value, result: '홈런' }], // 이전 tries로 현재의 tries를 만들기 때문에 함수형 업데이트 해야 함
+          prevTries, // // 현재 상태를 가져와서 업데이트 하겠다는 의미(함수형 업데이트 - 성능 최적화와 관련), 함수 형태이므로 미세한 조정 가능
+        ) => { // 다른 동작 가능
+          return [...prevTries, { try: value, result: '홈런' }];
+        }, // 이전 tries로 현재의 tries를 만들기 때문에 함수형 업데이트 해야 함
       );
       alert('홈런!!! 게임을 다시 시작합니다');
       setValue('');
