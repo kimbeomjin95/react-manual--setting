@@ -1,4 +1,6 @@
 // Node에서는 require 사용, react는 import, export 사용
+import Try from "./Try";
+
 const React = require('react');
 const { useState, useRef } = React; // 구조분해(비구조화 할당)
 
@@ -34,14 +36,12 @@ const NumberBaseball = () => {
       </form>
       <div>시도: {tries}</div>
       <ul>
-        {arr1.map((n, i) => ( // i: index
+        {arr1.map((v, i) => ( // i: index
           // map를 사용할 때 key를 사용해줘야 함, 리액트가 key를 보고 같은 컴포넌트인지 아닌지 판단 함
           // 반복문 사용시 key를 항상 고유하게 만들어주어야 함
           // <li key={i}>  -> 이 방식은 지양, key를 이용해서 성능최적화 할 때 문제가 발생
           // 요소가 추가만 되는 배열인 경우 i를 사용해도 됨(삭제 X)
-          <li key={n.fruit + n.taste}>
-            {n.fruit} - {n.taste} - {i}
-          </li>
+          <Try v={v} i={i}/> // 성능상, 가독성상 컴포넌트로 분리, 반복문에서 성능이슈가 발생, 컴포넌트를 만드는 이유는 재사용성
         ))}
       </ul>
     </>
