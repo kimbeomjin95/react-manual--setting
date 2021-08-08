@@ -1,10 +1,11 @@
 
 const path = require('path'); // webpack은 Node가 실행하는 것이기 때문에 import error 발생
 const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+// process.env.NODE_ENV = 'production'; // 실서비스에 빌드하기 위한 환경설정, 아래 mode: production도 추가
 
 module.exports = {
   // 웹팩에 대한 기본정보
-  mode: 'development', // 운영 - production
+  mode: 'development', // 실서비스 - production
   devtool: 'eval', // production: hidden-source-map
   resolve: {
     extensions: ['.jsx', '.js'],
