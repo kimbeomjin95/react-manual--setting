@@ -3,7 +3,7 @@ import Try from './Try';
 const React = require('react');
 const { useState, useRef } = React; // 구조분해(비구조화 할당)
 
-function getNumbers() {
+const getNumbers = () => {
   const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const array = [];
   for (let i = 0; i < 4; i++) {
@@ -11,11 +11,12 @@ function getNumbers() {
     array.push(chosen);
   }
   return array;
-}
+};
+
 const NumberBaseball = () => {
   const [value, setValue] = useState('');
   const [result, setResult] = useState('');
-  const [answer, setAnswer] = useState(getNumbers());
+  const [answer, setAnswer] = useState(getNumbers);
   const [tries, setTries] = useState([]);
 
   const onChange = e => {
@@ -29,7 +30,9 @@ const NumberBaseball = () => {
       // join 은 배열 안의 값들을 문자열 형태로 합쳐줍니다.
       // setResult('홈런');
       setTries(
-        [...tries, { try: value, result: '홈런' }], // push를 사용하지 않고 기존상태를 복사하여 react에서 무엇이 바뀌는지 감지 후 렌더링
+        (
+          prevTries, // // 현재 상태를 가져와서 업데이트 하겠다는 의미(함수형 업데이트 - 성능 최적화와 관련)
+        ) => [...prevTries, { try: value, result: '홈런' }], // 이전 tries로 현재의 tries를 만들기 때문에 함수형 업데이트 해야 함
       );
       alert('홈런!!! 게임을 다시 시작합니다');
       setValue('');
@@ -53,8 +56,8 @@ const NumberBaseball = () => {
             ball += 1;
           }
         }
-        setTries([
-          ...tries,
+        setTries(prevTries => [
+          ...prevTries,
           { try: value, result: `${strike}스트라이크 ${ball}볼 입니다` },
         ]);
         // setResult(`${stlike}스트라이크 ${ball}볼 입니다`);
