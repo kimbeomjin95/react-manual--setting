@@ -1,32 +1,68 @@
 // Node에서는 require 사용, react는 import, export 사용
-import Try from "./Try";
-
+import Try from './Try';
 const React = require('react');
 const { useState, useRef } = React; // 구조분해(비구조화 할당)
 
 function getNumbers() {
-  return undefined;
+  const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const array = [];
+  for (let i = 0; i < 4; i++) {
+    const chosen = candidate.splice(Math.floor(Math.random() * (9 - i)), 1)[0];
+    array.push(chosen);
+  }
+  return array;
 }
 const NumberBaseball = () => {
   const [value, setValue] = useState('');
   const [result, setResult] = useState('');
   const [answer, setAnswer] = useState(getNumbers());
-  const [tries, setTries] = useState('');
+  const [tries, setTries] = useState([]);
 
   const onChange = e => {
     setValue(e.target.value);
   };
 
-  function onSubmit() {}
+  const onSubmit = e => {
+    e.preventDefault();
+    console.log('answer:' + answer);
+    if (value === answer.join('')) {
+      // join 은 배열 안의 값들을 문자열 형태로 합쳐줍니다.
+      // setResult('홈런');
+      setTries(
+        [...tries, { try: value, result: '홈런' }], // push를 사용하지 않고 기존상태를 복사하여 react에서 무엇이 바뀌는지 감지 후 렌더링
+      );
+      alert('홈런!!! 게임을 다시 시작합니다');
+      setValue('');
+      setAnswer(getNumbers());
+      setTries([]);
+    } else {
+      const answerArray = value.split('').map(v => parseInt(v)); // split: 문자열을 배열로 변환
+      let strike = 0;
+      let ball = 0;
+      if (tries.length >= 9) {
+        // setResult(`10번 넘게 틀려서 실패! 답은 ${answer.join(',')}입니다!`);
+        alert(`아웃!!! 게임을 다시 시작합니다(정답:${answer.join(',')}))`);
+        setValue('');
+        setAnswer(getNumbers());
+        setTries([]);
+      } else {
+        for (let i = 0; i < 4; i++) {
+          if (answerArray[i] === answer[i]) {
+            strike += 1;
+          } else if (answer.includes(answerArray[i])) {
+            ball += 1;
+          }
+        }
+        setTries([
+          ...tries,
+          { try: value, result: `${strike}스트라이크 ${ball}볼 입니다` },
+        ]);
+        // setResult(`${stlike}스트라이크 ${ball}볼 입니다`);
+        setValue('');
+      }
+    }
+  };
 
-  // 배열에서 객체를 이용하여 반복문 사용
-  const arr1 = [
-    { fruit: '사과', taste: '맛있다' },
-    { fruit: '바나나', taste: '맛없다' },
-    { fruit: '귤', taste: '맛있다' },
-    { fruit: '수박', taste: '맛없다' },
-    { fruit: '메론', taste: '맛있다' },
-  ];
   return (
     <>
       <h1>{result}</h1>
@@ -34,29 +70,19 @@ const NumberBaseball = () => {
         <input maxLength="4" value={value} onChange={onChange} />{' '}
         {/* value와 onChange는 세트 */}
       </form>
-      <div>시도: {tries}</div>
+      <div>시도: {tries.length}</div>
       <ul>
-        {arr1.map((v, i) => ( // i: index
-          // map를 사용할 때 key를 사용해줘야 함, 리액트가 key를 보고 같은 컴포넌트인지 아닌지 판단 함
-          // 반복문 사용시 key를 항상 고유하게 만들어주어야 함
-          // <li key={i}>  -> 이 방식은 지양, key를 이용해서 성능최적화 할 때 문제가 발생
-          // 요소가 추가만 되는 배열인 경우 i를 사용해도 됨(삭제 X)
-          <Try v={v} i={i}/> // 성능상, 가독성상 컴포넌트로 분리, 반복문에서 성능이슈가 발생, 컴포넌트를 만드는 이유는 재사용성
-        ))}
+        {tries.map(
+          (
+            v,
+            i, // i: index
+          ) => (
+            <Try key={`${i + 1}차 시도`} tryInfo={v} /> // 현재는 key에 index를 넣어도 되는 상황, 가급적 자제
+          ),
+        )}
       </ul>
     </>
   );
 };
 
-// export const hello = 'hello' // import { hello } from …
-// 여러개 사용가능
-
-// export default NumberBaseball; // import NumberBaseball;
-// default는 한번만 사용할 수 있음
-
 export default NumberBaseball;
-
-// module.exports = NumberBaseball; // export default와 호환가능
-// 노드 모듈 시스템
-// module.export = { hello: 'a }; ->
-// exports.hello = 'a'
