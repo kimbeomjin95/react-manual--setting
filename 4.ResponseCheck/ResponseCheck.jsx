@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react'; // useRef: DOM에 직접 접근시 사용
 
-let timeout; // 전역 변수로 선언하지 않으면 settimeout 실행됨
-let startTime; // state로 담지 않는 이유는 값이 변경되면 렌더링이 다시 되기 때문에, 전역변수로 선언
-let endTime;
 const ResponseCheck = () => {
   const [state, setState] = useState('waiting');
   const [message, setMessage] = useState('클릭을 시작하세요');
   const [result, setResult] = useState([]); // 평균시간 리스트(빈배열 상태에선 합계reduce를 사용할 수 없음)
+  const timeout = useRef(null); // hook에서는 this의 속성들을 ref로 표현(ref의 추가기능)
+  const startTime = useRef(); // 값이 변경되어도 렌더링이 일어나지 않고, 값이 변경되도 렌더링 시키고 싶지 않을 때 useRef사용
+  const endTime = useRef(); // 변하는 값을 잠시 기록한다고 생각, ref인 경우 current로 무조건 접근해야 함
 
   // Math.random() 함수는 0~1(1은 미포함) 구간에서 부동소수점의 난수를 생성
   // Math.floor() 함수는 주어진 숫자와 같거나 작은 정수 중에서 가장 큰 수를 반환
@@ -14,25 +14,24 @@ const ResponseCheck = () => {
     if (state === 'waiting') {
       setState('ready');
       setMessage('초록색이 되면 클릭하세요');
-      timeout = setTimeout(() => {
+      timeout.current = setTimeout(() => {
         setState('now');
         setMessage('지금 클릭');
-        startTime = new Date();
+        startTime.current = new Date();
       }, Math.floor(Math.random() * 1000) + 2000); // 2초~3초 랜덤
     } else if (state === 'ready') {
       // 빠르게 클릭
-      clearTimeout(timeout); // 성급하게 클릭시 timeout를 초기화해야 초록색으로 변경되지 않음
+      clearTimeout(timeout.current); // 성급하게 클릭시 timeout를 초기화해야 초록색으로 변경되지 않음
       setState('waiting');
       setMessage('성급하셨네요^^ 초록색이 된 후 에 클릭하세요');
     } else if (state === 'now') {
       // 반응속도 체크
-      endTime = new Date();
+      endTime.current = new Date();
       setState('waiting');
       setMessage('클릭을 시작하세요');
       setResult(prevResult => {
-        return [...prevResult, endTime - startTime]; // 이전 배열을 복사후 push
+        return [...prevResult, endTime.current - startTime.current]; // 이전 배열을 복사후 push
       });
-      console.log(result);
     }
   };
 
