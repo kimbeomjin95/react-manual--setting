@@ -49,7 +49,7 @@ module.exports = {
   output: {
     // 출력
     // path.join: 경로를 통합, __dirname: 현재 폴더 경로,
-    path: path.join(__dirname, 'src'), // __dirname: C:\kbj\react\react-webgame/1.gugudan -> src, path는 실제경로
+    path: path.join(__dirname, 'src'), // __dirname: C:\kbj\react\react-webgame/1.Gugudan -> src, path는 실제경로
     filename: 'app.js',
     publicPath: "/src/"
   },
