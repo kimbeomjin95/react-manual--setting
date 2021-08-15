@@ -3,6 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <title>Title</title>
+    <style>
+      #screen {
+        width: 300px;
+        height: 300px;
+        text-align: center;
+        user-select: none;
+      }
+
+      #screen.waiting {
+        background-color: aqua;
+      }
+
+      #screen.ready {
+        background-color: red;
+        color: white;
+      }
+
+      #screen.now {
+        background-color: greenyellow;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div> <!-- html에서는 src에 단 하나의 JS파일만 입력할 수 있음, jsx파일을 하나의 파일로 통합 -->
