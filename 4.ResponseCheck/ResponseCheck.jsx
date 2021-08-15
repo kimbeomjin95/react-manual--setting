@@ -49,6 +49,9 @@ const ResponseCheck = () => {
       </>
     );
   };
+  // return [ // jsx에서 배열을 리턴하는 경우(key를 사용해야 함)
+  //   <div key='사과'>사과</div>, <div key='토마토'>토마토</div>, <div key='포도'>포도</div>
+  // ]
 
   // return 안에서는 for or if를 사용할 수 없음 그러므로 조건문 사용
   // false, undefined, null은 jsx에서 태그없음을 의미함
@@ -59,7 +62,19 @@ const ResponseCheck = () => {
       <div id="screen" className={state} onClick={onClick}>
         {message}
       </div>
-      {renderAverage()}
+      {/*{renderAverage()}*/}
+      {(() => {
+        if(result.length === 0) {
+          return null
+        } else {
+          return (
+          <>
+            <div>반응속도체크: {result.reduce((a, c) => a + c) / result.length}ms</div>
+            <button onClick={onClickReset}>리셋</button>
+          </>
+          )
+        }
+      })()} {/* 함수 선언하자 마자 즉시실행 함수를 만들어서 jsx내에서 if와 else를 사용하는 법  */}
     </>
   );
 };
