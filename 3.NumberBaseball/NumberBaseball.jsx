@@ -16,9 +16,10 @@ const getNumbers = () => {
 // 자식이 모두 memo이면 부모에도 memo를 적용할 수 있음
 const NumberBaseball = memo(() => {
   // 렌더링은 state or props가 바뀌었을 때 실행, setState만 호출하면 렌더링이 됌
+  // value가 변경되면 함수형컴포넌트 내의 내용이 모두 다시 실행됨(최적화 작업 필요 - useCallback, useMemo)
   const [value, setValue] = useState('');
   const [result, setResult] = useState('');
-  const [answer, setAnswer] = useState(getNumbers);
+  const [answer, setAnswer] = useState(getNumbers());
   const [tries, setTries] = useState([]);
 
   const onChange = e => {
