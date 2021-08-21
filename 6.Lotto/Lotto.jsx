@@ -31,7 +31,7 @@ const Lotto = () => {
 	const [redo, setRedo] = useState(false); // 재도전
 	const timeouts = useRef([]);
 
-	// 비동기에 변수를 같이 사용하면 클로저 문제가 발생하는데 let을 사용하면 let을 사용하면 클로져 문제가 발생하지 않음
+	// 비동기에 변수를 같이 사용하면 클로저 문제가 발생하는데 let을 사용하면 클로져 문제가 발생하지 않음
 	useEffect(() => {
 		console.log('useEffect');
 		for (let i = 0; i < winNumbers.length -1; i++) {
