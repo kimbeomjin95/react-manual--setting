@@ -18,9 +18,8 @@ const computerChoice = imgCoord => {
 };
 
 // 처음 렌더링이 실행될 때 useEffect가 실행됨
-// 주의 - 비동기 함수에서 밖의 변수를 참조하면 클로저 문제가 발생, 그러므로 비동기 함수 안에서 변수를 선언
-// useEffect(() => {
-// 비동기 요청을 많이 함
+// 주의 - 비동기 함수에서 밖의 변수를 참조하면 클로저 문제가 발생,
+// 그러므로 비동기 함수 안에서 변수를 선언,
 const RSP = () => {
   const [result, setResult] = useState('');
   const [score, setScore] = useState(0);
@@ -31,18 +30,21 @@ const RSP = () => {
   // 함수형 컴포넌트는 렌더링(imgCoordr값이 변경) 될때 마다 함수 내에 코드가 통째로 다시 실행됨
   useEffect(() => {
     // componentDidMount, componentDidUpdate 역할
+    // 컴포넌트가 첫 렌더링 된 후, 여기에 비동기 요청을 많이 함
+    // deps에 들어가는 값에 따라서 useEffect를 여러번 수행 가능
     // console.log('다시실행');
     interval.current = setInterval(changeHand, 100);
     return () => {
       // componentWillUnmount 역할
+      // 컴포넌트가 제거되기 직전, 비동기 요청 정리를 많이 함
       // console.log('종료');
-      clearInterval(interval.current); // 매번 clearInterval을 하기 때문에 setTimeout을 하는 것과 동일
+      clearInterval(interval.current); // 매번 clearInterval을 하기 때문에 setTimeout을 하는 것과 동일, 필수
     };
-  }, [imgCoord]); // imgCoord값이 바뀔때마다 useEffect도 계속 호출, deps를 넣지 않은 경우는 딱 1번만 실행됨
+  }, [imgCoord]); // deps에는 꼭 useEffect를 다시 실행할 값만 넣어야 함, deps를 넣지 않은 경우는 딱 1번만 실행됨
+  //
 
   // setInterval: 일정 시간마다 계속 반복작업을 해주는 것
   const changeHand = () => {
-    // interval.current = setInterval(() => {
     if (imgCoord === rspCoords.rock) {
       setImgCoord(rspCoords.scissors);
     } else if (imgCoord === rspCoords.scissors) {
@@ -50,7 +52,6 @@ const RSP = () => {
     } else if (imgCoord === rspCoords.paper) {
       setImgCoord(rspCoords.rock);
     }
-    // }, 1000);
   };
   const onClickBtn = choice => {
     clearInterval(interval.current);
